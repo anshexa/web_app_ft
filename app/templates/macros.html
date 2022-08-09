@@ -1,0 +1,22 @@
+{% macro render_pagination(pagination, prefix) %}
+<div class="ui right floated pagination menu">
+    {% if pagination.has_prev %}
+    <a class="icon item" href="{{ url_for_other_page(pagination.page - 1, prefix)}}">«</a>
+    {% endif %}
+    {%- for page in pagination.iter_pages() %}
+    {% if page %}
+    {% if page != pagination.page %}
+    <a class="item" href="{{ url_for_other_page(page, prefix) }}">{{ page }}</a>
+
+    {% else %}
+    <a class="active">{{ page }}</a>
+    {% endif %}
+    {% else %}
+    <a class="item_pass">...</a>
+    {% endif %}
+    {%- endfor %}
+    {% if pagination.has_next %}
+    <a class="icon item" href="{{ url_for_other_page(pagination.page + 1, prefix)}}">»</a>
+    {% endif %}
+</div>
+{% endmacro %}

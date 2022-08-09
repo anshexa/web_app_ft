@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% block content %}
+<style type="text/css">
+        ul.tree {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        ul.tree,
+        ul.tree ul {
+            width: auto;
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+        ul.tree li {
+            display: block;
+            width: auto;
+            float: left;
+            vertical-align: top;
+            padding: 0;
+            margin: 0;
+        }
+        ul.tree ul li {
+            background-image: url(data:image/gif;base64,R0lGODdhAQABAIABAAAAAP///ywAAAAAAQABAAACAkQBADs=);
+            background-repeat: repeat-x;
+            background-position: left top;
+        }
+        ul.tree li span {
+            display: block;
+            width: 5em;
+          /*
+            uncomment to fix levels
+            height: 1.5em;
+          */
+            margin: 0 auto;
+            text-align: center;
+            white-space: normal;
+            letter-spacing: normal;
+        }
+</style>
+<!--[if IE gt 8]> IE 9+ and not IE -->
+<style type="text/css">
+        ul.tree ul li:last-child {
+          background-repeat: no-repeat;
+          background-size:50% 1px;
+          background-position: left top;
+        }
+        ul.tree ul li:first-child {
+          background-repeat: no-repeat;
+          background-size: 50% 1px;
+          background-position: right top;
+        }
+        ul.tree ul li:first-child:last-child {
+          background: none;
+        }
+        ul.tree ul li span {
+          background: url(data:image/gif;base64,R0lGODdhAQABAIABAAAAAP///ywAAAAAAQABAAACAkQBADs=) no-repeat 50% top;
+          background-size: 1px 0.8em;
+          padding-top: 1.2em;
+        }
+        ul.tree ul {
+          background: url(data:image/gif;base64,R0lGODdhAQABAIABAAAAAP///ywAAAAAAQABAAACAkQBADs=) no-repeat 50% top;
+          background-size: 1px 0.8em;
+          margin-top: 0.2ex;
+          padding-top: 0.8em;
+        }
+</style>
+
+<style type="text/css">
+        ul.tree ul li {
+          background-image: url(pixel.gif);
+        }
+        ul.tree ul li.first {
+          background-image: url(left.gif);
+          background-position: center top;
+        }
+        ul.tree ul li.last {
+          background-image: url(right.gif);
+          background-position: center top;
+        }
+        ul.tree ul li.lone {
+          background: none;
+        }
+        ul.tree ul li span {
+          background: url(child.gif) no-repeat 50% top;
+          padding-top: 14px;
+        }
+        ul.tree ul {
+          background: url(child.gif) no-repeat 50% top;
+          margin-top: 0.2ex;
+          padding-top: 11px;
+        }
+</style>
+
+<style type="text/css">
+        .pagination {
+            margin: 10px 0;
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 1.2em;
+            color: #63a7f7;
+        }
+        .pagination a {
+            color: #63a7f7;
+            border: 0px solid #9aafe5;
+
+            width: 30px;
+            height: 30px;
+            float: left;
+            text-align: center;
+            line-height: 30px;
+            font-weight: 400;
+            font-size: 0.8em;
+            transition: background-color .25s ease-in-out;
+            text-decoration: none;
+        }
+        .pagination a.active, .pagination a.active:hover {
+            background-color: #126edb;
+            color: white;
+        }
+        .pagination a:hover:not(.active):not(.item_pass) {
+             background-color: #d1e6ff;
+        }
+</style>
+
+
+<div class="row">
+    <!--Таблица-->
+    <div class="col-4">
+        <div id="page-wrapper">
+            <div id="wrapper">
+                <ul>
+                    {%- for child in cat['children'] recursive %}
+                    <li>
+                        <a href="/cat/{{ child['hash'] }}"><span> {{ child['name'] }} </span></a>
+                        {%- if child['children'] -%}
+                        <ul>
+                            {{ loop(child['children']) }}
+                        </ul>
+                        {%- endif %}
+                    </li>
+                    {%- endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-8">
+        <table class="table table-sm">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th scope="col">sku</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for sku in result %}
+            <tr>
+                <td>{{ loop.index + (page - 1) * per_page }}</td>
+                <th><a href="/product/{{sku}}">{{sku}}</a></th>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+        {%- import "macros.html" as f -%}
+
+        {{ f.render_pagination(pagination, prefix) }}
+    </div>
+</div>
+
+
+{% endblock %}

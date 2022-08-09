@@ -1,0 +1,49 @@
+<title>{{prod['title']}}</title>
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="form-row mt-3">
+    {{prod['category']}}
+</div>
+<div class="form-row mt-3">
+    <h1>{{prod['name']}}</h1>
+</div>
+<div class="form-row mt-3">
+    {% for img in prod['imgs'] %}
+    <img src='{{img}}'/>
+    {% endfor %}
+</div>
+
+
+<div class="form-row mt-3" id="ProductDetails">
+    <div class="col">
+        {% for keys, values in prod['specifications'].items() %}
+        <dt>{{ keys }}</dt>
+        {% for list_val in values %}
+        {% for key, val in list_val.items() %}
+        <div class="row">
+            <div class="col-5">{{ key }}</div>
+            <div class="col-6">{{ val }}</div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% endfor %}
+    </div>
+    <!--с проверкой на пустоту-->
+    <div class="col offset-md-1">
+        {% if prod['details']|length %}
+        <dt>Details:</dt>
+        <small>{{prod['details']|safe}}</small>
+        {% endif %}
+    </div>
+</div>
+
+<div class="form-row mt-3">
+    <dt>{{prod['price']}} {{prod['priceCurrency']}}</dt>
+</div>
+<div class="form-row mt-3">{{prod['desc']}}</div>
+<div class="form-row mt-3">{{prod['url']}}</div>
+
+
+{% endblock %}
